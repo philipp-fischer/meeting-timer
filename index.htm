@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Timer</title>
+  <link rel="stylesheet" href="styles.css">
+  <!--link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet"-->
+  <script>
+    var topics = [
+      { "header": "General" },
+
+      { "Intro": { "min": 5 } },
+      { "Contents": { "min": 4 } },
+
+      { "header": "Projects" },
+
+      { "Frontend (Thomas)": { "min": 3 } },
+      { "Backend (Joe)": { "min": 5 } },
+      { "Customer X": { "min": 2 } },
+      { "Customer Y": { "min": 3 } },
+
+      { "header": "Other" },
+
+      { "Students": { "min": 1 } },
+      { "IT Security": { "min": 1 } },
+      { "Infrastructure": { "min": 1 } },
+      { "Upcoming": { "min": 2 } }
+    ];
+
+    var discussion_mins = 10;
+    var scale_factor = 1.0;  // Use this to linearly scale all times (e.g. if too long)
+
+  </script>
+</head>
+
+<body>
+  <h1 class="page-title">
+    Meeting Timer
+  </h1>
+
+  <div class="circles">
+  </div>
+
+  <div style="position: fixed; width:100%; height:150px; background: #777; bottom: 0px; left: 0px;">
+    <p class="total">
+      Total remaining time<br /> <b id="total_remaining">0 min</b>
+    </p>
+    <div class="timer circle discussion" id="discussion"><strong></strong></div>
+    <p class="total">
+      End of meeting<br /> <b id="eom">00:00</b>
+    </p>
+  </div>
+
+  <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script-->
+  <script src="jquery.min.js"></script>
+  <script>
+    // Intializing the HTML elements must be done before loading circle-progress.js
+    function add_timer(name, properties) {
+      new_timer = $('<div class="timer circle"><strong></strong><span>' + name + '</span></div>');
+      properties['min'] *= scale_factor;
+      timers.push(new_timer);
+      $('.circles').append(new_timer);
+      return new_timer;
+    }
+
+    var timers = [];
+
+    var topics_new = [];
+    for (let topic of topics) {
+      if (typeof topic['header'] == 'undefined') {
+        timer_name = false;
+        for (let name in topic) {
+          timer_name = name;
+        }
+        if (topic[timer_name]['min'] > 0) {
+          add_timer(timer_name, topic[timer_name]);
+          topics_new.push(topic);
+        }
+      } else {
+        $('.circles').append($('<h1 class="category">' + topic['header'] + '</h1>'));
+      }
+    }
+
+    // Add discussion timer
+    timers.push($('#discussion'));
+    topics_new.push({ "Discussion": { "min": discussion_mins } });
+
+    topics = topics_new;
+
+  </script>
+  <script src="circle-progress.js"></script>
+  <script src="meeting-timer.js"></script>
+</body>
+</html>

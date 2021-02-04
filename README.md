@@ -1,8 +1,8 @@
 Meeting Timer
 =============
 
-Your meetings are taking too long? People are not focusing on the important parts, but getting lost in the detail?
-Then Meeting Timer is for you!
+Your meetings are take too long? People don't focus on the important parts, but getting lost in the details?
+Then Meeting Timer is the right thing for you!
 
 ![](./images/screenshot.png)
 
